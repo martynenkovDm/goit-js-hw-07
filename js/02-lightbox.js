@@ -4,7 +4,7 @@ const galleryEl = document.querySelector('.gallery');
 
 const liImgList = galleryItems.map(item => {
     const { preview, original, description } = item;
-    return `<li class="gallery__item">
+    return `<li class="gallery__item" >
                 <a class="gallery__link" href="${original}">
                     <img
                         class="gallery__image"
@@ -17,4 +17,7 @@ const liImgList = galleryItems.map(item => {
       
 }).join('');
 galleryEl.insertAdjacentHTML("beforeend", liImgList);
-const bigImg = new SimpleLightbox('.gallery a');
+const bigImg = new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
+    captionDelay: 250,
+});

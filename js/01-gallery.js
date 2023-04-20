@@ -1,8 +1,6 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 const galleryEl = document.querySelector('.gallery');
-let basicLightboxEl;
-let bigImg;
 const liImgList = galleryItems.map(item => {
     const { preview, original, description } = item;
 
@@ -25,19 +23,24 @@ galleryEl.addEventListener('click', onImageClick);
 function onImageClick(event) {
   event.preventDefault();
   if (event.target.nodeName !== 'IMG') return;
-    bigImg = basicLightbox.create(
+    const bigImg = basicLightbox.create(
         `<img
           src="${event.target.dataset.source}"
           alt="${event.target.alt}"
         />`,
+        {
+       onShow: (bigImg) => {
+         window.addEventListener('keydown', onEscBtnClick);
+       },
+       onClose: (bigImg) => {
+         window.removeEventListener('keydown', onEscBtnClick);
+       },
+     }
     );
-    bigImg.show();
-    basicLightboxEl = document.querySelector('.basicLightbox');
-    document.addEventListener('keydown', onEscBtnClick);
-};
-const onEscBtnClick = (event) => {
-    if (event.code === 'Escape' && basicLightboxEl.classList.contains('basicLightbox--visible')) {
+    const onEscBtnClick = (event) => {
+    if (event.code === 'Escape') {
         bigImg.close();
     }
-    document.removeEventListener('keydown', onEscBtnClick);
 }
+    bigImg.show();
+};
